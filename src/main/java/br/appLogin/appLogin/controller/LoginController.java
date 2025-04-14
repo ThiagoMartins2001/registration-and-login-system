@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.appLogin.appLogin.model.User;
 import br.appLogin.appLogin.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -28,9 +29,10 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/")
-    public String dashboard() {
-        return "index";
+    @GetMapping("/logout")
+    public String dashboard(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 
     @PostMapping("/logar")
