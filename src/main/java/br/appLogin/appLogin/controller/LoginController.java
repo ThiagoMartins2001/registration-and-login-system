@@ -14,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import br.appLogin.appLogin.model.User;
 import br.appLogin.appLogin.repository.UserRepository;
 import br.appLogin.appLogin.service.CookieService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+
 import jakarta.validation.Valid;
 
 
@@ -33,8 +34,8 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String dashboard(HttpSession session) {
-        session.invalidate();
+    public String dashboard(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
+        model.addAttribute("name", CookieService.getCookie(request, "nomeusuario"));
         return "redirect:/login";
     }
 
@@ -42,7 +43,7 @@ public class LoginController {
     public String loginuser(User usuario, Model model, HttpServletResponse response) throws UnsupportedEncodingException{
         User userLogado = this.ur.login(usuario.getEmail(), usuario.getPassword());
         if(userLogado != null){
-            CookieService.setCookie (response, "usuarioLogado", String.valueOf(userLogado.getId()), 10000 );
+            CookieService.setCookie (response, "userLogado", String.valueOf(userLogado.getId()), 10000 );
             CookieService.setCookie (response, "nomeusuario", String.valueOf (userLogado.getName()), 10000 );
           return "redirect:/";
         }
