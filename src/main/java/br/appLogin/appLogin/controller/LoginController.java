@@ -33,10 +33,15 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/")
     public String dashboard(Model model, HttpServletRequest request) throws UnsupportedEncodingException {
-        model.addAttribute("name", CookieService.getCookie(request, "nomeusuario"));
-        return "redirect:/login";
+        String nomeUsuario = CookieService.getCookie(request, "nomeusuario");
+        if (nomeUsuario == null || nomeUsuario.isEmpty()) {
+            return "redirect:/login"; // se não estiver logado, redireciona
+        }
+        
+        model.addAttribute("name", nomeUsuario); // envia o nome para o HTML
+        return "index"; // nome do seu arquivo dashboard.html
     }
 
     @PostMapping("/logar")
