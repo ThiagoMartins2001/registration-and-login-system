@@ -49,9 +49,15 @@ public class LoginController {
             CookieService.setCookie (response, "nomeusuario", String.valueOf (userLogado.getName()), 10000 );
           return "redirect:/";
         }
-
         model.addAttribute("erro", "Usuárrio ou senha inválidos!");
         return "login";
+    }
+
+    @GetMapping("/sairr")
+    public String sair(HttpServletResponse response) throws UnsupportedEncodingException{
+            CookieService.setCookie (response, "userLogado", "", 0 );
+          return "redirect:login";
+    
     }
 
     @GetMapping("/cadastrarUsuario")
